@@ -6,7 +6,7 @@ set(CMAKE_BUILD_TYPE "Release")
 # ADD_COMPILE_OPTIONS(-std=c++11 )
 ADD_COMPILE_OPTIONS(-std=c++14 )
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
-
+find_package(PCL REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   trajectory_msgs
   control_msgs
@@ -31,11 +31,14 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
+  ${PCL_INCLUDE_DIRS}
 )
 
 add_executable (fake_mm src/cmd_2_state.cpp )
 target_link_libraries(fake_mm
-  ${catkin_LIBRARIES})
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+  )
 
 add_executable (model_vis src/model_vis.cpp )
 target_link_libraries(model_vis

@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
 
 find_package(Eigen3 REQUIRED)
+find_package(PCL REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   control_msgs
   nav_msgs
@@ -28,9 +29,10 @@ catkin_package()
 include_directories(
   include
   SYSTEM
-  ${catkin_INCLUDE_DIRS} 
+  ${catkin_INCLUDE_DIRS}
   # ${PROJECT_SOURCE_DIR}/include
   ${EIGEN3_INCLUDE_DIR}
+  ${PCL_INCLUDE_DIRS}
 )
 
 add_library( controller_utils
@@ -48,6 +50,6 @@ add_executable( mm_controller_node
 
 target_link_libraries( mm_controller_node
   ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
   controller_utils
 )
-
