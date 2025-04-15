@@ -124,9 +124,12 @@ namespace remani_planner
 
         std::string mesh_resource_ur5_base_, mesh_resource_ur5_forearm_, mesh_resource_ur5_shoulder_, mesh_resource_ur5_upperarm_;
         std::string mesh_resource_ur5_wrist1_, mesh_resource_ur5_wrist2_, mesh_resource_ur5_wrist3_;
-        std::string mesh_resource_mobile_base_, mesh_resource_fastarmer_base0_, mesh_resource_fastarmer_link1_, mesh_resource_fastarmer_link2_;
-        std::string mesh_resource_fastarmer_link3_, mesh_resource_fastarmer_link4_, mesh_resource_fastarmer_link5_, mesh_resource_fastarmer_link6_;
+        std::string mesh_resource_mobile_base_; // mesh_resource_fastarmer_base0_, mesh_resource_fastarmer_link1_, mesh_resource_fastarmer_link2_;
+        // std::string mesh_resource_fastarmer_link3_, mesh_resource_fastarmer_link4_, mesh_resource_fastarmer_link5_, mesh_resource_fastarmer_link6_;
         std::string mesh_resource_gripper_base_, mesh_resource_gripper_left_, mesh_resource_gripper_right_;
+        std::string mesh_resource_xarm7_base_, mesh_resource_xarm7_link1_, mesh_resource_xarm7_link2_;
+        std::string mesh_resource_xarm7_link3_, mesh_resource_xarm7_link4_, mesh_resource_xarm7_link5_;
+        std::string mesh_resource_xarm7_link6_, mesh_resource_xarm7_link7_;
 
         void setColorSet();
         void setLinkPoint();

@@ -68,13 +68,13 @@ void MMConfig::setParam(ros::NodeHandle &nh){
 
     mesh_resource_mobile_base_ = "file://" + mesh_path + "mobile_base.STL";
 
-    mesh_resource_fastarmer_base0_ = "file://" + mesh_path + "FastArmer/base_link.STL";
-    mesh_resource_fastarmer_link1_ = "file://" + mesh_path + "FastArmer/link1.STL";
-    mesh_resource_fastarmer_link2_ = "file://" + mesh_path + "FastArmer/link2.STL";
-    mesh_resource_fastarmer_link3_ = "file://" + mesh_path + "FastArmer/link3.STL";
-    mesh_resource_fastarmer_link4_ = "file://" + mesh_path + "FastArmer/link4.STL";
-    mesh_resource_fastarmer_link5_ = "file://" + mesh_path + "FastArmer/link5.STL";
-    mesh_resource_fastarmer_link6_ = "file://" + mesh_path + "FastArmer/link6.STL";
+    // mesh_resource_fastarmer_base0_ = "file://" + mesh_path + "FastArmer/base_link.STL";
+    // mesh_resource_fastarmer_link1_ = "file://" + mesh_path + "FastArmer/link1.STL";
+    // mesh_resource_fastarmer_link2_ = "file://" + mesh_path + "FastArmer/link2.STL";
+    // mesh_resource_fastarmer_link3_ = "file://" + mesh_path + "FastArmer/link3.STL";
+    // mesh_resource_fastarmer_link4_ = "file://" + mesh_path + "FastArmer/link4.STL";
+    // mesh_resource_fastarmer_link5_ = "file://" + mesh_path + "FastArmer/link5.STL";
+    // mesh_resource_fastarmer_link6_ = "file://" + mesh_path + "FastArmer/link6.STL";
     mesh_resource_gripper_base_    = "file://" + mesh_path + "FastArmer/gripper_base.dae";
     mesh_resource_gripper_left_    = "file://" + mesh_path + "FastArmer/gripper_left.dae";
     mesh_resource_gripper_right_   = "file://" + mesh_path + "FastArmer/gripper_right.dae";
@@ -86,6 +86,15 @@ void MMConfig::setParam(ros::NodeHandle &nh){
     mesh_resource_ur5_wrist1_   = "file://" + mesh_path + "ur5/wrist1.dae";
     mesh_resource_ur5_wrist2_   = "file://" + mesh_path + "ur5/wrist2.dae";
     mesh_resource_ur5_wrist3_   = "file://" + mesh_path + "ur5/wrist3.dae";
+
+    mesh_resource_xarm7_base_ = "file://" + mesh_path + "xarm7/visual/link_base.STL";
+    mesh_resource_xarm7_link1_ = "file://" + mesh_path + "xarm7/visual/link1.STL";
+    mesh_resource_xarm7_link2_ = "file://" + mesh_path + "xarm7/visual/link2.STL";
+    mesh_resource_xarm7_link3_ = "file://" + mesh_path + "xarm7/visual/link3.STL";
+    mesh_resource_xarm7_link4_ = "file://" + mesh_path + "xarm7/visual/link4.STL";
+    mesh_resource_xarm7_link5_ = "file://" + mesh_path + "xarm7/visual/link5.STL";
+    mesh_resource_xarm7_link6_ = "file://" + mesh_path + "xarm7/visual/link6.STL";
+    mesh_resource_xarm7_link7_ = "file://" + mesh_path + "xarm7/visual/link7.STL";
 
     B_h_ << 0.0, -1.0,
             1.0,  0.0;
@@ -146,99 +155,110 @@ void MMConfig::getAJointTran(int joint_num, double theta, Eigen::Matrix4d &T, Ei
     T_grad = Eigen::Matrix4d::Zero();
     if(useFastArmer_){
         switch(joint_num){
-            case 0:{
-                T(0, 0) = cosTheta;
-                T(0, 2) = sinTheta;
-                T(1, 0) = sinTheta;
-                T(1, 1) = 0;
-                T(1, 2) = -cosTheta;
-                T(2, 1) = 1;
-                T(2, 2) = 0;
-                T(2, 3) = linkLength;
-
-                T_grad(0, 0) = -sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 0) = cosTheta;
-                T_grad(1, 2) = sinTheta;
-                break;
-            }
-            case 1:{
+            case 0:{  // arm_joint1
                 T(0, 0) = cosTheta;
                 T(0, 1) = -sinTheta;
-                T(0, 3) = -linkLength * cosTheta;
                 T(1, 0) = sinTheta;
                 T(1, 1) = cosTheta;
-                T(1, 3) = -linkLength * sinTheta;
+                T(2, 3) = 0.155;  // z offset
 
                 T_grad(0, 0) = -sinTheta;
                 T_grad(0, 1) = -cosTheta;
-                T_grad(0, 3) = linkLength * sinTheta;
                 T_grad(1, 0) = cosTheta;
                 T_grad(1, 1) = -sinTheta;
-                T_grad(1, 3) = -linkLength * cosTheta;
                 break;
             }
-            case 2:{
-                T(0, 0) = -sinTheta;
-                T(0, 2) = cosTheta;
-                T(0, 3) = -linkLength * sinTheta;
-                T(1, 0) = cosTheta;
-                T(1, 1) = 0.0;
-                T(1, 2) = sinTheta;
-                T(1, 3) = linkLength * cosTheta;
-                T(2, 1) = 1.0;
-                T(2, 2) = 0.0;
-
-                T_grad(0, 0) = -cosTheta;
-                T_grad(0, 2) = -sinTheta;
-                T_grad(0, 3) = -linkLength * cosTheta;
-                T_grad(1, 0) = -sinTheta;
-                T_grad(1, 2) = cosTheta;
-                T_grad(1, 3) = -linkLength * sinTheta;
-                break;
-            }
-            case 3:{
-                T(0, 0) = cosTheta;
-                T(0, 2) = -sinTheta;
-                T(1, 0) = sinTheta;
-                T(1, 1) = 0;
+            case 1:{  // arm_joint2 (rpy -1.57, 0, 0)
+                T(0, 1) = -cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = 0;
+                T(1, 1) = sinTheta;
                 T(1, 2) = cosTheta;
-                T(2, 1) = -1;
-                T(2, 2) = 0;
-                T(2, 3) = linkLength;
+                T(1, 3) = 0.075;
+                T(2, 0) = 1;
+                T(2, 3) = 0.112;
 
-                T_grad(0, 0) = -sinTheta;
-                T_grad(0, 2) = -cosTheta;
-                T_grad(1, 0) = cosTheta;
+                T_grad(0, 1) = sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = cosTheta;
                 T_grad(1, 2) = -sinTheta;
                 break;
             }
-            case 4:{
-                T(0, 0) = sinTheta;
-                T(0, 2) = cosTheta;
-                T(1, 0) = -cosTheta;
-                T(1, 1) = 0;
-                T(1, 2) = sinTheta;
-                T(2, 1) = -1;
-                T(2, 2) = 0;
+            case 2: {  // arm_joint3 (rpy 1.57, 0, 0)
+                T(0, 1) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = 0;
+                T(1, 1) = -sinTheta;
+                T(1, 2) = cosTheta;
+                T(1, 3) = -0.192;
+                T(2, 0) = 1;
+                T(2, 3) = -0.075;
 
-                T_grad(0, 0) = cosTheta;
-                T_grad(0, 2) = -sinTheta;
-                T_grad(1, 0) = sinTheta;
-                T_grad(1, 2) = cosTheta;
+                T_grad(0, 1) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = -cosTheta;
+                T_grad(1, 2) = -sinTheta;
                 break;
             }
-            case 5:{
-                T(0, 0) = cosTheta;
-                T(0, 1) = -sinTheta;
-                T(1, 0) = sinTheta;
-                T(1, 1) = cosTheta;
-                T(2, 3) = linkLength;
+            case 3: {  // arm_joint4 (rpy 1.57, 0, 0)
+                T(0, 1) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = 0.0525;
+                T(1, 1) = -sinTheta;
+                T(1, 2) = cosTheta;
+                T(1, 3) = -0.067;
+                T(2, 0) = 1;
+                T(2, 3) = 0.101;
 
-                T_grad(0, 0) = -sinTheta;
-                T_grad(0, 1) = -cosTheta;
-                T_grad(1, 0) = cosTheta;
-                T_grad(1, 1) = -sinTheta;
+                T_grad(0, 1) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = -cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                break;
+            }
+            case 4: {  // arm_joint5 (rpy 1.57, 0, 0)
+                T(0, 1) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = 0.0775;
+                T(1, 1) = -sinTheta;
+                T(1, 2) = cosTheta;
+                T(1, 3) = -0.169;
+                T(2, 0) = 1;
+                T(2, 3) = -0.067;
+
+                T_grad(0, 1) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = -cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                break;
+            }
+            case 5: {  // arm_joint6 (rpy 1.57, 0, 0)
+                T(0, 1) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(1, 1) = -sinTheta;
+                T(1, 2) = cosTheta;
+                T(2, 0) = 1;
+                T(2, 3) = 0.173;
+
+                T_grad(0, 1) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = -cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                break;
+            }
+            case 6: {  // arm_joint7 (rpy -1.57, 0, 0)
+                T(0, 1) = -cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = 0.076;
+                T(1, 1) = -sinTheta;
+                T(1, 2) = -cosTheta;
+                T(1, 3) = 0.069;
+                T(2, 0) = 1;
+
+                T_grad(0, 1) = sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 1) = -cosTheta;
+                T_grad(1, 2) = sinTheta;
                 break;
             }
                 
@@ -303,8 +323,6 @@ void MMConfig::getAJointTran(int joint_num, double theta, Eigen::Matrix4d &T, Ei
             T_grad(1, 1) = -sinTheta;
         }
     }
-
-    
 }
 
 void MMConfig::visMM(ros::Publisher &pub, std::string ns, int idx, double alpha, const Eigen::Vector3d &car_state, const Eigen::VectorXd &joint_state, const bool &gripper_close){
@@ -781,52 +799,58 @@ void MMConfig::setLinkPoint()
         for(int i = 0; i < manipulator_dof_; ++i){
             switch(i){
             case 0:{
-                link_pts.resize(4, 4);
-                link_pts.col(0) = Eigen::Vector4d(0, 0, 0, 1);
-                link_pts.col(1) = Eigen::Vector4d(0, 0, 0.05, 1);
-                link_pts.col(2) = Eigen::Vector4d(0, 0, -0.05, 1);
-                link_pts.col(3) = Eigen::Vector4d(0, -0.05, 0, 1);
+                // arm_link1 - vertical offset ~0.155
+                link_pts.resize(4, 3);
+                link_pts.col(0) = Eigen::Vector4d(0, 0, 0.0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0, 0, 0.077, 1);
+                link_pts.col(2) = Eigen::Vector4d(0, 0, 0.155, 1);
                 break;
             }
             case 1:{
-                link_pts.resize(4, 6);
-                link_pts.col(0) = Eigen::Vector4d(0, 0, 0.0, 1);
-                link_pts.col(1) = Eigen::Vector4d(0.07, 0, 0.0, 1);
-                link_pts.col(2) = Eigen::Vector4d(0.14, 0, 0.0, 1);
-                link_pts.col(3) = Eigen::Vector4d(0.21, 0, 0.0, 1);
-                link_pts.col(4) = Eigen::Vector4d(0.28, 0, 0.0, 1);
-                link_pts.col(5) = Eigen::Vector4d(0.35, 0, 0.0, 1);
+                // arm_link2 - 0.385m horizontal, joint offset (0.075, 0.112)
+                link_pts.resize(4, 4);
+                link_pts.col(0) = Eigen::Vector4d(0.0, 0, 0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0.1, 0, 0, 1);
+                link_pts.col(2) = Eigen::Vector4d(0.2, 0, 0, 1);
+                link_pts.col(3) = Eigen::Vector4d(0.3, 0, 0, 1);
                 break;
             }
             case 2:{
-                link_pts.resize(4, 1);
-                link_pts.col(0) = Eigen::Vector4d(0, 0, 0, 1);
+                // arm_link3 - 0.385m vertical
+                link_pts.resize(4, 3);
+                link_pts.col(0) = Eigen::Vector4d(0, 0, 0.0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0, 0, -0.1, 1);
+                link_pts.col(2) = Eigen::Vector4d(0, 0, -0.2, 1);
                 break;
             }
             case 3:{
-                link_pts.resize(4, 5);
-                link_pts.col(0) = Eigen::Vector4d(0.0, 0.07, 0.0, 1);
-                link_pts.col(1) = Eigen::Vector4d(0.0, 0.14, 0.0, 1);
-                link_pts.col(2) = Eigen::Vector4d(0.0, 0.21, 0.0, 1);
-                link_pts.col(3) = Eigen::Vector4d(0.0, 0.28, 0.0, 1);
-                link_pts.col(4) = Eigen::Vector4d(0.0, 0.35, 0.0, 1);
-                // link_pts.col(4) = Eigen::Vector4d(0, 0.4, 0.0, 1);
+                // arm_link4 - short link ~0.1m, twisted
+                link_pts.resize(4, 3);
+                link_pts.col(0) = Eigen::Vector4d(0.0, 0.0, 0.0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0.05, 0.0, 0.05, 1);
+                link_pts.col(2) = Eigen::Vector4d(0.1, 0.0, 0.1, 1);
                 break;
             }
             case 4:{
-                link_pts.resize(4, 1);
-                link_pts.col(0) = Eigen::Vector4d(0, 0, 0, 1);
+                // arm_link5 - ~0.17m along Z
+                link_pts.resize(4, 4);
+                link_pts.col(0) = Eigen::Vector4d(0, 0, 0.0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0, 0, 0.05, 1);
+                link_pts.col(2) = Eigen::Vector4d(0, 0, 0.10, 1);
+                link_pts.col(3) = Eigen::Vector4d(0, 0, 0.15, 1);
                 break;
             }
             case 5:{
-                link_pts.resize(4, 7);
-                link_pts.col(0) = Eigen::Vector4d(0, 0, -0.10, 1);
-                link_pts.col(1) = Eigen::Vector4d(0, 0.03, -0.10, 1);
-                link_pts.col(2) = Eigen::Vector4d(0, -0.03, -0.10, 1);
-                link_pts.col(3) = Eigen::Vector4d(0, 0.05, -0.05, 1);
-                link_pts.col(4) = Eigen::Vector4d(0, -0.05, -0.05, 1);
-                link_pts.col(5) = Eigen::Vector4d(0, 0.06, -0.00, 1);
-                link_pts.col(6) = Eigen::Vector4d(0, -0.06, -0.00, 1);
+                // arm_link6 - end-effector mount, shorter
+                link_pts.resize(4, 2);
+                link_pts.col(0) = Eigen::Vector4d(0.0, 0.0, 0.0, 1);
+                link_pts.col(1) = Eigen::Vector4d(0.03, 0.0, 0.03, 1);
+                break;
+            }
+            case 6:{
+                // arm_link7 - very short, optional
+                link_pts.resize(4, 1);
+                link_pts.col(0) = Eigen::Vector4d(0.0, 0.0, 0.015, 1);
                 break;
             }
             default:
@@ -887,11 +911,11 @@ void MMConfig::setLinkPoint()
 void MMConfig::setGripperPoint(const bool gripper_close){
     if(!useFastArmer_) return;
     if(gripper_close){
-        manipulator_link_pts_[5].col(5) = Eigen::Vector4d(0, 0.02, -0.01, 1);
-        manipulator_link_pts_[5].col(6) = Eigen::Vector4d(0, -0.02, -0.01, 1);
+        manipulator_link_pts_[6].col(5) = Eigen::Vector4d(0, 0.02, -0.01, 1);
+        manipulator_link_pts_[6].col(6) = Eigen::Vector4d(0, -0.02, -0.01, 1);
     }else{
-        manipulator_link_pts_[5].col(5) = Eigen::Vector4d(0, 0.06, -0.00, 1);
-        manipulator_link_pts_[5].col(6) = Eigen::Vector4d(0, -0.06, -0.00, 1);
+        manipulator_link_pts_[6].col(5) = Eigen::Vector4d(0, 0.06, -0.00, 1);
+        manipulator_link_pts_[6].col(6) = Eigen::Vector4d(0, -0.06, -0.00, 1);
     }
 }
 
@@ -1011,73 +1035,107 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, -M_PI_2);
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 11, ns, alpha, T_now, mesh_resource_fastarmer_base0_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 11, ns, alpha, T_now, mesh_resource_xarm7_base_));
 
-        
-        T_temp.setZero();
-        T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, -M_PI_2);
-        T_temp(2, 3) = manipulator_config_(0);
+        // Joint 1
+        T_temp.setIdentity();
+        T_temp(2, 3) = 0.155;  // offset from URDF
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(0));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 12, ns, alpha, T_now, mesh_resource_fastarmer_link1_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 12, ns, alpha, T_now, mesh_resource_xarm7_link1_));
 
+        // Joint 2
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
+        T_temp(0, 3) = 0.0;
+        T_temp(1, 3) = 0.075;
+        T_temp(2, 3) = 0.112;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(1));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 13, ns, alpha, T_now, mesh_resource_fastarmer_link2_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 13, ns, alpha, T_now, mesh_resource_xarm7_link2_));
 
+        // Joint 3
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, -M_PI_2);
-        T_temp(0, 3) = manipulator_config_(1);
+        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, 0);
+        T_temp(1, 3) = -0.192;
+        T_temp(2, 3) = -0.075;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(2));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 14, ns, alpha, T_now, mesh_resource_fastarmer_link3_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 14, ns, alpha, T_now, mesh_resource_xarm7_link3_));
 
+        // Joint 4
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, -M_PI);
-        T_temp(0, 3) = 0.0650000000000004;
-        T_temp(1, 3) = -manipulator_config_(3);
+        T_temp(0, 3) = 0.0525;
+        T_temp(1, 3) = -0.067;
+        T_temp(2, 3) = 0.101;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(3));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 15, ns, alpha, T_now, mesh_resource_fastarmer_link4_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 15, ns, alpha, T_now, mesh_resource_xarm7_link4_));
 
+        // Joint 5
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, M_PI_2);
+        T_temp(0, 3) = 0.0775;
+        T_temp(1, 3) = -0.169;
+        T_temp(2, 3) = -0.067;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(4)); // theta(4)
+        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(4));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 16, ns, alpha, T_now, mesh_resource_fastarmer_link5_));
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 16, ns, alpha, T_now, mesh_resource_xarm7_link5_));
 
+        // Joint 6
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
+        T_temp(2, 3) = 0.173;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(5)); // theta(5)
+        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(5));
         T_now = T_now * T_temp;
-        marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 17, ns, alpha, T_now, mesh_resource_fastarmer_link6_));
-        
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 17, ns, alpha, T_now, mesh_resource_xarm7_link6_));
+
+        // Joint 7
+        T_temp.setZero();
+        T_temp(3, 3) = 1.0;
+        T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
+        T_temp(0, 3) = 0.076;
+        T_temp(1, 3) = 0.069;
+        T_now = T_now * T_temp;
+        T_temp.setZero();
+        T_temp(3, 3) = 1.0;
+        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(6));
+        T_now = T_now * T_temp;
+        marker_array.markers.push_back(
+            getMarker(idx * vis_idx_size_ + 18, ns, alpha, T_now, mesh_resource_xarm7_link7_));
+
+        // Gripper
         T_temp.setIdentity();
         T_temp.block(0, 3, 3, 1) << 0.005, 0.005, 0.061;
         T_now = T_now * T_temp;
