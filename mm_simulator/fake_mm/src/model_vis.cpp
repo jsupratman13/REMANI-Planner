@@ -64,7 +64,7 @@ namespace model_vis{
                 tf::Transform(tf::Quaternion(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w()), 
                 tf::Vector3(mat(0, 3), mat(1, 3), mat(2, 3))),
                 time, "mm_base", "mani_0"));
-        for(int i = 0; i < 6; ++i){
+        for(int i = 0; i < manipulator_dof_ - 1; ++i){
             mm_config_->getAJointTran(i, mm_state_.joint_p(i), mat, mat_nouse);
             rot = mat.block(0, 0, 3, 3);
             Eigen::Quaterniond quaternion1(rot);

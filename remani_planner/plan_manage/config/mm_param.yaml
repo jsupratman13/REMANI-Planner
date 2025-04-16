@@ -20,12 +20,12 @@ mm:
   use_fast_armer       : true # whether to use FastArmer or UR5
   manipulator_thickness: 0.03 # radius of the circle used to check the collision of the manipulator for FastArmer
   manipulator_config: [0.155, 0.385, 0.385, 0.1, 0.1, 0.173, 0.028]  # xArm7 link lengths
-  manipulator_min_pos  : [-3.14, -2.059, -3.14, -0.19198, -1.69297, -3.14] # minimum joint position for UR5
-  manipulator_max_pos  : [ 3.14,  2.0944,  3.14,  3.927,  3.14,  3.14] # maximum joint position for UR5
+  manipulator_min_pos  : [-3.14, -2.059, -3.14, -0.19198, -3.14, -1.69297, -3.14] # minimum joint position for UR5
+  manipulator_max_pos  : [ 3.14,  2.0944,  3.14,  3.927, 3.14, 3.14,  3.14] # maximum joint position for UR5
 
   # param for UR5
-  # use_fast_armer       : false # whether to use FastArmer or UR5
-  # manipulator_thickness: 0.044 # radius of the circle used to check the collision of the manipulator for UR5
-  # manipulator_config   : [0.163,  0.425, 0.392, 0.127, 0.1,   0.1] # parameters for DH table for UR5
-  # manipulator_min_pos  : [-3.14, -3.14, -3.14, -3.14, -3.14, -3.14] # minimum joint position for UR5
-  # manipulator_max_pos  : [ 3.14,  3.14,  3.14,  3.14,  3.14,  3.14] # maximum joint position for UR5
+  #use_fast_armer       : false # whether to use FastArmer or UR5
+  #manipulator_thickness: 0.044 # radius of the circle used to check the collision of the manipulator for UR5
+  #manipulator_config   : [0.163,  0.425, 0.392, 0.127, 0.1,   0.1] # parameters for DH table for UR5
+  #manipulator_min_pos  : [-3.14, -3.14, -3.14, -3.14, -3.14, -3.14] # minimum joint position for UR5
+  #manipulator_max_pos  : [ 3.14,  3.14,  3.14,  3.14,  3.14,  3.14] # maximum joint position for UR5
