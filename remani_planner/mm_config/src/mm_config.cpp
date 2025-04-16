@@ -157,108 +157,109 @@ void MMConfig::getAJointTran(int joint_num, double theta, Eigen::Matrix4d &T, Ei
         switch(joint_num){
             case 0:{  // arm_joint1
                 T(0, 0) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(1, 0) = sinTheta;
+                T(1, 2) = -cosTheta;
+                T(2, 1) = -1;
+                T(2, 2) = 0;
+                T(2, 3) = linkLength;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = sinTheta;
+                break;
+            }
+            case 1:{  // arm_joint2 (rpy -1.57, 0, 0)
+                T(0, 0) = cosTheta;
+                T(0, 2) = -sinTheta;
+                T(1, 0) = sinTheta;
+                T(1, 2) = cosTheta;
+                T(2, 1) = 1;
+                T(2, 2) = 0;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = -cosTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                break;
+            }
+            case 2: {  // arm_joint3 (rpy 1.57, 0, 0)
+                T(0, 0) = cosTheta;
+                T(0, 2) = -sinTheta;
+                T(1, 0) = sinTheta;
+                T(1, 2) = cosTheta;
+                T(2, 1) = 1;
+                T(2, 2) = 0;
+                T(2, 3) = linkLength;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = -cosTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                break;
+            }
+            case 3: {  // arm_joint4 (rpy 1.57, 0, 0)
+                T(0, 0) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(0, 3) = linkLength * cosTheta;
+                T(1, 0) = sinTheta;
+                T(1, 2) = -cosTheta;
+                T(1, 3) = linkLength * sinTheta;
+                T(2, 1) = -1;
+                T(2, 2) = 0;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(0, 3) = -linkLength * sinTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = sinTheta;
+                T_grad(1, 3) = linkLength * cosTheta;
+                break;
+            }
+            case 4: {  // arm_joint5 (rpy 1.57, 0, 0)
+                T(0, 0) = cosTheta;
+                T(0, 2) = -sinTheta;
+                T(0, 3) = -linkLength * cosTheta;  // linkLength = a (negative)
+                T(1, 0) = sinTheta;
+                T(1, 2) = cosTheta;
+                T(1, 3) = linkLength * sinTheta;
+                T(2, 1) = 1;
+                T(2, 2) = 0;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = -cosTheta;
+                T_grad(0, 3) = -linkLength * sinTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = -sinTheta;
+                T_grad(1, 3) = linkLength * cosTheta;
+                break;
+            }
+            case 5: {  // arm_joint6 (rpy 1.57, 0, 0)
+                T(0, 0) = cosTheta;
+                T(0, 2) = sinTheta;
+                T(1, 0) = sinTheta;
+                T(1, 2) = -cosTheta;
+                T(2, 1) = -1;
+                T(2, 2) = 0;
+
+                T_grad(0, 0) = -sinTheta;
+                T_grad(0, 2) = cosTheta;
+                T_grad(1, 0) = cosTheta;
+                T_grad(1, 2) = sinTheta;
+                break;
+            }
+            case 6: {  // arm_joint7 (rpy -1.57, 0, 0)
+                T(0, 0) = cosTheta;
                 T(0, 1) = -sinTheta;
                 T(1, 0) = sinTheta;
                 T(1, 1) = cosTheta;
-                T(2, 3) = 0.155;  // z offset
+                T(2, 3) = linkLength;
 
                 T_grad(0, 0) = -sinTheta;
                 T_grad(0, 1) = -cosTheta;
                 T_grad(1, 0) = cosTheta;
                 T_grad(1, 1) = -sinTheta;
-                break;
-            }
-            case 1:{  // arm_joint2 (rpy -1.57, 0, 0)
-                T(0, 1) = -cosTheta;
-                T(0, 2) = sinTheta;
-                T(0, 3) = 0;
-                T(1, 1) = sinTheta;
-                T(1, 2) = cosTheta;
-                T(1, 3) = 0.075;
-                T(2, 0) = 1;
-                T(2, 3) = 0.112;
-
-                T_grad(0, 1) = sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = cosTheta;
-                T_grad(1, 2) = -sinTheta;
-                break;
-            }
-            case 2: {  // arm_joint3 (rpy 1.57, 0, 0)
-                T(0, 1) = cosTheta;
-                T(0, 2) = sinTheta;
-                T(0, 3) = 0;
-                T(1, 1) = -sinTheta;
-                T(1, 2) = cosTheta;
-                T(1, 3) = -0.192;
-                T(2, 0) = 1;
-                T(2, 3) = -0.075;
-
-                T_grad(0, 1) = -sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = -cosTheta;
-                T_grad(1, 2) = -sinTheta;
-                break;
-            }
-            case 3: {  // arm_joint4 (rpy 1.57, 0, 0)
-                T(0, 1) = cosTheta;
-                T(0, 2) = sinTheta;
-                T(0, 3) = 0.0525;
-                T(1, 1) = -sinTheta;
-                T(1, 2) = cosTheta;
-                T(1, 3) = -0.067;
-                T(2, 0) = 1;
-                T(2, 3) = 0.101;
-
-                T_grad(0, 1) = -sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = -cosTheta;
-                T_grad(1, 2) = -sinTheta;
-                break;
-            }
-            case 4: {  // arm_joint5 (rpy 1.57, 0, 0)
-                T(0, 1) = cosTheta;
-                T(0, 2) = sinTheta;
-                T(0, 3) = 0.0775;
-                T(1, 1) = -sinTheta;
-                T(1, 2) = cosTheta;
-                T(1, 3) = -0.169;
-                T(2, 0) = 1;
-                T(2, 3) = -0.067;
-
-                T_grad(0, 1) = -sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = -cosTheta;
-                T_grad(1, 2) = -sinTheta;
-                break;
-            }
-            case 5: {  // arm_joint6 (rpy 1.57, 0, 0)
-                T(0, 1) = cosTheta;
-                T(0, 2) = sinTheta;
-                T(1, 1) = -sinTheta;
-                T(1, 2) = cosTheta;
-                T(2, 0) = 1;
-                T(2, 3) = 0.173;
-
-                T_grad(0, 1) = -sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = -cosTheta;
-                T_grad(1, 2) = -sinTheta;
-                break;
-            }
-            case 6: {  // arm_joint7 (rpy -1.57, 0, 0)
-                T(0, 1) = -cosTheta;
-                T(0, 2) = sinTheta;
-                T(0, 3) = 0.076;
-                T(1, 1) = -sinTheta;
-                T(1, 2) = -cosTheta;
-                T(1, 3) = 0.069;
-                T(2, 0) = 1;
-
-                T_grad(0, 1) = sinTheta;
-                T_grad(0, 2) = cosTheta;
-                T_grad(1, 1) = -cosTheta;
-                T_grad(1, 2) = sinTheta;
                 break;
             }
                 
@@ -1030,21 +1031,16 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
     Eigen::Matrix4d T_now = T_q * T_q_0_;
 
     if(useFastArmer_){
-        Eigen::Matrix4d T_temp;
-        T_temp.setZero();
-        T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, -M_PI_2);
-        T_now = T_now * T_temp;
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 11, ns, alpha, T_now, mesh_resource_xarm7_base_));
 
+        Eigen::Matrix4d T_temp;
+
         // Joint 1
-        T_temp.setIdentity();
-        T_temp(2, 3) = 0.155;  // offset from URDF
-        T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(0, 0, theta(0));
+        T_temp(2, 3) = manipulator_config_(0);
         T_now = T_now * T_temp;
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 12, ns, alpha, T_now, mesh_resource_xarm7_link1_));
@@ -1053,9 +1049,8 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
-        T_temp(0, 3) = 0.0;
-        T_temp(1, 3) = 0.075;
-        T_temp(2, 3) = 0.112;
+        // T_temp(1, 3) = 0.075;
+        // T_temp(2, 3) = 0.112;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1068,8 +1063,9 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, 0);
-        T_temp(1, 3) = -0.192;
-        T_temp(2, 3) = -0.075;
+        // T_temp(1, 3) = 0.192;
+        // T_temp(2, 3) = -0.075;
+        T_temp(1, 3) = -0.192 - 0.101;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1081,10 +1077,10 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         // Joint 4
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, -M_PI);
+        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, 0);
         T_temp(0, 3) = 0.0525;
-        T_temp(1, 3) = -0.067;
-        T_temp(2, 3) = 0.101;
+        T_temp(1, 3) = 0.0;
+        T_temp(2, 3) = 0.0;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1093,13 +1089,13 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 15, ns, alpha, T_now, mesh_resource_xarm7_link4_));
 
-        // Joint 5
+        // // Joint 5
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, M_PI_2);
+        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, 0);
         T_temp(0, 3) = 0.0775;
-        T_temp(1, 3) = -0.169;
-        T_temp(2, 3) = -0.067;
+        T_temp(1, 3) = -0.169 - 0.173;
+        T_temp(2, 3) = 0.0;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1108,11 +1104,11 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 16, ns, alpha, T_now, mesh_resource_xarm7_link5_));
 
-        // Joint 6
+        // // Joint 6
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
-        T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
-        T_temp(2, 3) = 0.173;
+        T_temp.block(0, 0, 3, 3) = euler2rotation(M_PI_2, 0, 0);
+        T_temp(2, 3) = 0.0;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1121,12 +1117,13 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 17, ns, alpha, T_now, mesh_resource_xarm7_link6_));
 
-        // Joint 7
+        // // Joint 7
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
         T_temp.block(0, 0, 3, 3) = euler2rotation(-M_PI_2, 0, 0);
         T_temp(0, 3) = 0.076;
-        T_temp(1, 3) = 0.069;
+        T_temp(1, 3) = 0.028 + 0.069;
+        T_temp(2, 3) = 0.0;
         T_now = T_now * T_temp;
         T_temp.setZero();
         T_temp(3, 3) = 1.0;
@@ -1135,9 +1132,9 @@ visualization_msgs::MarkerArray MMConfig::getManiMarkerArray(std::string ns, int
         marker_array.markers.push_back(
             getMarker(idx * vis_idx_size_ + 18, ns, alpha, T_now, mesh_resource_xarm7_link7_));
 
-        // Gripper
+        // // Gripper
         T_temp.setIdentity();
-        T_temp.block(0, 3, 3, 1) << 0.005, 0.005, 0.061;
+        T_temp.block(0, 3, 3, 1) << 0.005, 0.005, 0.001;
         T_now = T_now * T_temp;
         marker_array.markers.push_back(getMarker(idx * vis_idx_size_ + 18, ns, alpha, T_now, mesh_resource_gripper_base_));
 
